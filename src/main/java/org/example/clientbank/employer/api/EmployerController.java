@@ -43,7 +43,7 @@ public class EmployerController {
 
     @GetMapping("/employer/{id}")
     public ResponseEntity<Employer> getCustomerById(@PathVariable long id) {
-        log.info("Trying to get employer by id");
+        log.info("Getting employer details by ID");
         Optional<Employer> employerOptional = employerService.getEmployerById(id);
 
         return employerOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
@@ -51,7 +51,7 @@ public class EmployerController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createEmployer(@RequestBody RequestEmployerDto requestEmployerDto) {
-        log.info("Trying to create new employer");
+        log.info("Registering a new employer");
         Employer employer = EmployerMapper.INSTANCE.employerDtoToEmployer(requestEmployerDto);
         try {
             Employer createdEmployer = employerService.createEmployer(employer);
@@ -63,7 +63,7 @@ public class EmployerController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseMessage> updateEmployer(@PathVariable Long id, @Valid @RequestBody RequestEmployerDto requestEmployerDto) {
-        log.info("Trying to update employer");
+        log.info("Updating employer details");
         Optional<Employer> employerOptional = employerService.getEmployerById(id);
         if (employerOptional.isEmpty()) {
             return ResponseEntity.badRequest().body(new ResponseMessage(EmployerStatus.EMPLOYER_NOT_FOUND.getMessage()));
@@ -72,7 +72,7 @@ public class EmployerController {
         EmployerStatus status = employerService.updateEmployer(employerOptional.get(), requestEmployerDto);
 
         return switch (status) {
-            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Employer updated successfully."));
+            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Employer information updated successfully."));
             case NOTHING_TO_UPDATE ->
                     ResponseEntity.ok(new ResponseMessage(EmployerStatus.NOTHING_TO_UPDATE.getMessage()));
             case EMPLOYER_NOT_FOUND ->
@@ -83,7 +83,7 @@ public class EmployerController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseMessage> deleteById(@PathVariable long id) {
-        log.info("Trying to delete employer by id: {}", id);
+        log.info("Deleting employer record by ID: {}", id);
 
         try {
             employerService.deleteById(id);

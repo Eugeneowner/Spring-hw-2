@@ -25,11 +25,11 @@ public class AccountController {
 
     @PostMapping("/add_funds")
     public ResponseEntity<ResponseMessage> addFunds(@Valid @RequestBody AddWithdrawFundsModel addWithdrawFundsModel) {
-        log.info("Trying to add funds");
+
 
         AccountStatus status = accountService.addFunds(addWithdrawFundsModel.cardNumber(), addWithdrawFundsModel.sum());
         return switch (status) {
-            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Funds add successfully."));
+            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Funds added successfully."));
             case ACCOUNT_NOT_FOUND ->
                     ResponseEntity.badRequest().body(new ResponseMessage(AccountStatus.ACCOUNT_NOT_FOUND.getMessage()));
             default -> ResponseEntity.badRequest().body(new ResponseMessage(AccountStatus.UNEXPECTED.getMessage()));
@@ -38,11 +38,10 @@ public class AccountController {
 
     @PostMapping("/withdraw_funds")
     public ResponseEntity<ResponseMessage> withdrawFunds(@Valid @RequestBody AddWithdrawFundsModel addWithdrawFundsModel) {
-        log.info("Trying to withdraw funds");
 
         AccountStatus status = accountService.withdrawFunds(addWithdrawFundsModel.cardNumber(), addWithdrawFundsModel.sum());
         return switch (status) {
-            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Funds withdrawn successfully."));
+            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Funds have been successfully withdrawn."));
             case INSUFFICIENT_FUNDS ->
                     ResponseEntity.badRequest().body(new ResponseMessage(AccountStatus.INSUFFICIENT_FUNDS.getMessage()));
             case ACCOUNT_NOT_FOUND ->
@@ -53,10 +52,9 @@ public class AccountController {
 
     @PostMapping("/send_funds")
     public ResponseEntity<ResponseMessage> sendFunds(@Valid @RequestBody SendFundsModel sendFundsModel) {
-        log.info("Trying to send funds");
         AccountStatus status = accountService.sendFunds(sendFundsModel.numberFrom(), sendFundsModel.numberTo(), sendFundsModel.sum());
         return switch (status) {
-            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Funds sent successfully."));
+            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Funds transfer successful."));
             case ACCOUNT_FROM_NOT_FOUND ->
                     ResponseEntity.badRequest().body(new ResponseMessage(AccountStatus.ACCOUNT_FROM_NOT_FOUND.getMessage()));
             case ACCOUNT_TO_NOT_FOUND ->

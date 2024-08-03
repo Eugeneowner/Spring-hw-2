@@ -39,7 +39,7 @@ public class CustomerController {
 
     @GetMapping("/all_data")
     public ResponseEntity<List<ResponseCustomerAllDataDto>> findAllDataAboutCustomers() {
-        log.info("Trying to get all data about customers");
+        log.info("Getting all customer information");
         List<ResponseCustomerAllDataDto> customers = customerService.findAll()
                 .stream().map(CustomerMapper.INSTANCE::customerToCustomerAllDataDto).toList();
         if (customers.isEmpty()) {
@@ -51,7 +51,7 @@ public class CustomerController {
 
     @GetMapping
     public ResponseEntity<List<ResponseCustomerDto>> findAll() {
-        log.info("Trying to get all customers");
+        log.info("Getting the list of all customers");
         List<ResponseCustomerDto> customers = customerService.findAll().stream()
                 .map(CustomerMapper.INSTANCE::customerToCustomerDto).toList();
         if (customers.isEmpty()) {
@@ -63,7 +63,7 @@ public class CustomerController {
 
     @GetMapping("/customer/{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable long id) {
-        log.info("Trying to get customer by id");
+        log.info("Getting customer details by ID");
         Optional<ResponseCustomerDto> customerOptional = customerService.getCustomerById(id)
                 .map(CustomerMapper.INSTANCE::customerToCustomerDto);
         if (customerOptional.isEmpty()) {
@@ -74,24 +74,24 @@ public class CustomerController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createCustomer(@RequestBody RequestCustomerDto requestCustomerDto) {
-        log.info("Trying to create new customer");
+        log.info("Creating a new customer");
         Customer customer = CustomerMapper.INSTANCE.customerDtoToCustomer(requestCustomerDto);
         try {
             Customer createdCustomer = customerService.createCustomer(customer);
             return ResponseEntity.ok(CustomerMapper.INSTANCE.customerToCustomerDto(createdCustomer));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to create customer: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Customer creation failed: " + e.getMessage());
         }
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseMessage> updateCustomer(@PathVariable Long id, @Valid @RequestBody RequestCustomerDto requestCustomerDto) {
-        log.info("Trying to update customer");
+        log.info("Updating customer details");
 
         CustomerStatus status = customerService.updateCustomer(id, requestCustomerDto);
 
         return switch (status) {
-            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Customer updated successfully."));
+            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Customer information updated successfully."));
             case NOTHING_TO_UPDATE ->
                     ResponseEntity.ok(new ResponseMessage(CustomerStatus.NOTHING_TO_UPDATE.getMessage()));
             case CUSTOMER_NOT_FOUND ->
@@ -102,11 +102,11 @@ public class CustomerController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseMessage> deleteById(@PathVariable long id) {
-        log.info("Trying to delete customer by id: {}", id);
+        log.info("Deleting customer record by ID: {}", id);
 
         try {
             customerService.deleteById(id);
-            return ResponseEntity.ok(new ResponseMessage("Customer deleted successfully."));
+            return ResponseEntity.ok(new ResponseMessage("Customer record deleted successfully."));
         } catch (EmptyResultDataAccessException e) {
             return ResponseEntity.badRequest().body(new ResponseMessage(CustomerStatus.CUSTOMER_NOT_FOUND.getMessage()));
         }
@@ -114,7 +114,7 @@ public class CustomerController {
 
     @PostMapping("/create_account_by_id")
     public ResponseEntity<?> createAccountByCustomerId(@Valid @RequestBody CreateAccountByIdModel createAccountByIdModel) {
-        log.info("Trying to create account by customer id");
+        log.info("Creating new account based on customer ID");
         Currency currency = Currency.valueOf(createAccountByIdModel.currency());
         Account createdAccount = customerService.createAccountByCustomerId(createAccountByIdModel.id(), currency);
 
@@ -129,11 +129,10 @@ public class CustomerController {
 
     @DeleteMapping("/delete_account_by_id")
     public ResponseEntity<ResponseMessage> deleteAccountByCustomerId(@RequestParam long id, @RequestParam String accountNumber) {
-        log.info("Trying to delete account by id");
         CustomerStatus status = customerService.deleteAccountByCustomerId(id, accountNumber);
 
         return switch (status) {
-            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Account was successfully deleted."));
+            case SUCCESS -> ResponseEntity.ok(new ResponseMessage("Account has been deleted successfully."));
             case CUSTOMER_NOT_FOUND ->
                     ResponseEntity.badRequest().body(new ResponseMessage(CustomerStatus.CUSTOMER_NOT_FOUND.getMessage()));
             case CARD_NOT_FOUND ->
@@ -144,10 +143,9 @@ public class CustomerController {
 
     @DeleteMapping("/delete_accounts_by_id")
     public ResponseEntity<ResponseMessage> deleteAccountsByCustomerId(@RequestParam long id) {
-        log.info("Trying to delete all accounts by customer id");
         boolean deleted = customerService.deleteAccountsByCustomerId(id);
         if (deleted) {
-            return ResponseEntity.ok(new ResponseMessage("Accounts deleted successfully for customer with id: " + id));
+            return ResponseEntity.ok(new ResponseMessage("Customer with ID has had all accounts deleted successfully: " + id));
         } else {
             return ResponseEntity.badRequest().body(new ResponseMessage(CustomerStatus.CUSTOMER_NOT_FOUND.getMessage()));
         }
@@ -156,7 +154,6 @@ public class CustomerController {
     @PutMapping("/customer/add_employer")
     public ResponseEntity<?> addEmployerToCustomer(@RequestParam long customerId,
                                                                  @RequestParam long employerId) {
-        log.info("Trying to connect customer and employer");
         Enum<?> status = customerService.addEmployerToCustomer(customerId, employerId);
 
 
@@ -178,7 +175,7 @@ public class CustomerController {
             @RequestParam long customerId,
             @RequestParam long employerId) {
 
-        log.info("Trying to disconnect employer from customer");
+
         Enum<?> status = customerService.removeEmployerFromCustomer(customerId, employerId);
 
         if (status == CustomerStatus.SUCCESS) {

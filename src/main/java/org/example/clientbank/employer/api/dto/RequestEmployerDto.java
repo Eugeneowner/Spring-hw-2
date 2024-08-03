@@ -15,12 +15,12 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @Data
 public class RequestEmployerDto {
-    @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
-    @Size(max = 100, message = "Name must not exceed 100 characters")
+    @Size(min = 2, max = 100, message = "Name must have a length of 2 to 100 characters")
+    @Size(max = 100, message = "Name length must not exceed 100 characters")
     private String name;
 
-    @NotBlank(message = "Email must not be blank")
-    @Email(message = "Invalid email format")
-    @Size(max = 100, message = "Email must not exceed 100 characters")
+    @NotBlank(message = "Email is required and cannot be blank")
+    @Email(message = "Email address is not in a valid format")
+    @Size(max = 100, message = "Email length must not exceed 100 characters")
     private String address;
 }

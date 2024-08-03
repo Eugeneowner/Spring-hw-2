@@ -18,16 +18,16 @@ import static lombok.AccessLevel.PRIVATE;
 @Data
 public class RequestAccountDto {
 
-    @NotBlank(message = "Number must not be blank")
-    @Size(max = 100, message = "Name must not exceed 100 characters")
+    @NotBlank(message = "Number is required and cannot be blank")
+    @Size(max = 100, message = "Name cannot be longer than 100 characters")
    private String number;
 
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Currency must not be blank")
-    @Size(max = 3, message = "Currency must not exceed 3 characters")
+    @NotBlank(message = "Currency cannot be blank")
+    @Size(max = 3, message = "Currency code must not exceed 3 characters")
    private Currency currency;
 
-    @NotBlank(message = "Balance must not be blank")
-    @Size(max = 15, message = "Currency must not exceed 15 characters")
+    @NotBlank(message = "Balance is required and cannot be blank")
+    @Size(max = 15, message = "Currency field cannot be longer than 15 characters")
    private Double balance;
 }

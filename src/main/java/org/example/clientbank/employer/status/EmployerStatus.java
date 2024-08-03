@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum EmployerStatus {
-    SUCCESS("Success operation."),
+    SUCCESS("Operation completed successfully."),
     EMPLOYER_NOT_FOUND("Employer not found."),
-    NOTHING_TO_UPDATE("No changes detected for the employer."),
-    UNEXPECTED("An unexpected error occurred.");
+    NOTHING_TO_UPDATE("No updates found for the employer."),
+    UNEXPECTED("An unforeseen error happened.");
 
     private final String message;
 }

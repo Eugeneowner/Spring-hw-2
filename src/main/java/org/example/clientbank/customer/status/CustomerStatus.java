@@ -6,11 +6,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum CustomerStatus {
-    SUCCESS("Success operation."),
-    CUSTOMER_NOT_FOUND("Customer not found."),
-    NOTHING_TO_UPDATE("No changes detected for the customer."),
+    SUCCESS("Operation completed successfully."),
+    CUSTOMER_NOT_FOUND("Customer could not be found."),
+    NOTHING_TO_UPDATE("No modifications detected for the customer."),
     CARD_NOT_FOUND("Card not found"),
-    UNEXPECTED("An unexpected error occurred.");
+    UNEXPECTED("An unforeseen error happened.");
 
     private final String message;
 }
