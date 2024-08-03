@@ -18,26 +18,25 @@ import static lombok.AccessLevel.PRIVATE;
 @Entity
 @Table(name = "accounts")
 @EqualsAndHashCode(callSuper = true)
-@FieldDefaults(level = PRIVATE)
 @Data
 @NoArgsConstructor
 @ToString(exclude = "customer")
 public class Account extends AbstractEntity {
 
     @Column(nullable = false)
-    String number;
+    private String number;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    Currency currency;
+    private Currency currency;
 
     @Column(nullable = false)
-    Double balance;
+    private Double balance;
 
     @ManyToOne
     @JsonIgnore
     @JoinColumn
-    Customer customer;
+    private Customer customer;
 
     public Account(Currency currency, Customer customer) {
         this.id = null;

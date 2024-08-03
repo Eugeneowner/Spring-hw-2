@@ -12,7 +12,7 @@ import org.example.clientbank.account.enums.Currency;
 
 import static lombok.AccessLevel.PRIVATE;
 
-@FieldDefaults(level = PRIVATE)
+
 @EqualsAndHashCode
 @AllArgsConstructor
 @Data
@@ -20,14 +20,14 @@ public class RequestAccountDto {
 
     @NotBlank(message = "Number must not be blank")
     @Size(max = 100, message = "Name must not exceed 100 characters")
-    String number;
+   private String number;
 
     @Enumerated(EnumType.STRING)
     @NotBlank(message = "Currency must not be blank")
     @Size(max = 3, message = "Currency must not exceed 3 characters")
-    Currency currency;
+   private Currency currency;
 
     @NotBlank(message = "Balance must not be blank")
     @Size(max = 15, message = "Currency must not exceed 15 characters")
-    Double balance;
+   private Double balance;
 }

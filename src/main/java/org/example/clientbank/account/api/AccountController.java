@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = {
         "http://localhost:3000",
         "http://localhost:3001",
-        "www.site.com"
+        "https://client-bank-front.vercel.app"
 }, allowedHeaders = "*")
 @RequiredArgsConstructor
 public class AccountController {
